@@ -1,0 +1,140 @@
+﻿@model Catpuccino_FinalProject.Models.User
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "_Layout";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="~/css/profile.css" />
+
+<div class="container profile-container">
+    <form asp-controller="Account" asp-action="EditProfile" method="post" enctype="multipart/form-data" class="profile-layout-wrapper">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="card-base card-left">
+            <div id="image-container">
+                <img id="profilePreview" src="~/images/userpics/@(string.IsNullOrEmpty(Model.ProfilePicture) ? "UserDefault.png" : Model.ProfilePicture)"
+                     class="profile-pic" alt="Profile Picture" />
+            </div>
+
+            <!-- LOGOUT BUTTON -->
+            <div id="logout-section">
+                <button type="button" class="btn-primary-action" onclick="openLogoutModal()">
+                    Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+
+            <div id="upload-section" style="display:none;">
+                <input type="file" id="imageUpload" name="imageFile" style="display:none;" accept="image/*" onchange="previewImage(this)" />
+                <button type="button" class="btn-primary-action btn-upload-style" onclick="document.getElementById('imageUpload').click();">
+                    Upload Picture
+                </button>
+            </div>
+        </div>
+
+        <div class="card-base card-right">
+            <div class="display-mode info-section">
+                <div class="info-row">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">@Model.Username</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">@Model.Email</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Pass:</span>
+                    <span class="info-value">*****</span>
+                </div>
+
+                <br><div class="button-wrapper">
+                    <button type="button" onclick="toggleEdit()" class="btn-primary-action">
+                        Edit <i class="fa-solid fa-pencil"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="edit-mode info-section">
+                <div class="info-row">
+                    <span class="info-label">Name:</span>
+                    <input asp-for="Username" class="edit-input" />
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <input asp-for="Email" class="edit-input" />
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Pass:</span>
+                    <input name="Password" type="password" class="edit-input" placeholder="********" />
+                </div>
+
+                <br /><div class="button-wrapper">
+                    <button type="submit" class="btn-primary-action">Save Changes</button>
+                    <br />
+                    <a href="javascript:void(0)" onclick="toggleEdit()" class="cancel-link">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- LOGOUT MODAL HTML -->
+<div class="logout-modal-overlay" id="logoutModalOverlay">
+    <div class="logout-modal-card">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <p>Are you sure you want to log out?</p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a asp-controller="Home" asp-action="Onboarding" class="btn-modal-custom btn-modal-yes">YES</a>
+            <button type="button" class="btn-modal-custom btn-modal-no" onclick="closeLogoutModal()">NO</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openLogoutModal() {
+        document.getElementById('logoutModalOverlay').style.display = 'flex';
+    }
+
+    function closeLogoutModal() {
+        document.getElementById('logoutModalOverlay').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const overlay = document.getElementById('logoutModalOverlay');
+        if (event.target == overlay) {
+            closeLogoutModal();
+        }
+    }
+
+    function toggleEdit() {
+        var displayDiv = document.querySelector('.display-mode');
+        var editDiv = document.querySelector('.edit-mode');
+        var logoutSec = document.getElementById('logout-section');
+        var uploadSec = document.getElementById('upload-section');
+
+        if (displayDiv.style.display === "none") {
+            displayDiv.style.display = "block";
+            editDiv.style.display = "none";
+            logoutSec.style.display = "block";
+            uploadSec.style.display = "none";
+        } else {
+            displayDiv.style.display = "none";
+            editDiv.style.display = "block";
+            logoutSec.style.display = "none";
+            uploadSec.style.display = "block";
+        }
+    }
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profilePreview').setAttribute('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
