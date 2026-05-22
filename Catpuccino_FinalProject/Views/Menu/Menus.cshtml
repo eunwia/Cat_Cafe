@@ -53,18 +53,18 @@
                 <div class="modal fade product-detail-modal" id="modal-@item.Id" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content modal-content-custom shadow-lg p-0">
-                            
+
                             <img src="@item.ImageUrl" class="w-100" style="height: 250px; object-fit: cover; border-top-left-radius: 30px; border-top-right-radius: 30px;" />
-                            
+
                             <div class="p-4">
                                 <h3 class="text-brown fw-bold mb-1 product-name-display">@item.Name</h3>
                                 <p class="small text-muted mb-4">@item.Description</p>
 
                                 <form id="form-@item.Id">
                                     <input type="hidden" name="ProductId" value="@item.Id" />
-                                    
+
                                     <h5 class="text-brown fw-bold mb-3">Size</h5>
-                                    
+
                                     <div class="d-flex gap-2 mb-4 size-selector-group">
                                         <input type="radio" id="small-@item.Id" name="Size" value="Small" class="d-none size-radio" data-addon="0" checked>
                                         <label for="small-@item.Id" class="btn-size-label text-center">
@@ -77,7 +77,7 @@
                                             <span class="fw-bold d-block">Medium</span>
                                             <span class="small">+P20</span>
                                         </label>
-                                        
+
                                         <input type="radio" id="large-@item.Id" name="Size" value="Large" class="d-none size-radio" data-addon="40">
                                         <label for="large-@item.Id" class="btn-size-label text-center">
                                             <span class="fw-bold d-block">Large</span>
@@ -106,7 +106,7 @@
                                     </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -121,6 +121,7 @@
     }
 </main>
 
+<!-- ORDER MODAL -->
 <div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-content-custom shadow-lg">
@@ -153,12 +154,125 @@
     </div>
 </div>
 
+<!-- PAYMENT MODAL -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom shadow-lg">
+
+            <div class="modal-header modal-header-custom border-0 d-flex justify-content-between">
+                <h5 class="modal-title modal-title-custom">Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0">
+
+                <!-- Step 1: Select Payment Method -->
+                <div class="px-3 pb-3" id="step-select-method">
+                    <p class="text-muted small fw-bold mb-2">SELECT PAYMENT METHOD</p>
+
+                    <div class="d-flex flex-column gap-2 mb-4">
+
+                        <label class="payment-method-option d-flex align-items-center gap-3 p-3 rounded-4 border" style="cursor: pointer;">
+                            <input type="radio" name="paymentMethod" value="Maya" class="d-none pay-radio" />
+                            <div style="background:#E8F0FE; color:#1A56DB; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">M</div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-brown">Maya</div>
+                                <div class="text-muted small">Pay via Maya e-wallet</div>
+                            </div>
+                            <div class="pay-radio-dot" style="width:18px; height:18px; border-radius:50%; border:1.5px solid #ccc; flex-shrink:0;"></div>
+                        </label>
+
+                        <label class="payment-method-option d-flex align-items-center gap-3 p-3 rounded-4 border" style="cursor: pointer;">
+                            <input type="radio" name="paymentMethod" value="GCash" class="d-none pay-radio" />
+                            <div style="background:#E6F0FF; color:#0070E0; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">G</div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-brown">GCash</div>
+                                <div class="text-muted small">Pay via GCash e-wallet</div>
+                            </div>
+                            <div class="pay-radio-dot" style="width:18px; height:18px; border-radius:50%; border:1.5px solid #ccc; flex-shrink:0;"></div>
+                        </label>
+
+                        <label class="payment-method-option d-flex align-items-center gap-3 p-3 rounded-4 border" style="cursor: pointer;">
+                            <input type="radio" name="paymentMethod" value="Cash" class="d-none pay-radio" />
+                            <div style="background:#EAF3DE; color:#3B6D11; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">₱</div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-brown">Cash</div>
+                                <div class="text-muted small">Pay at the counter</div>
+                            </div>
+                            <div class="pay-radio-dot" style="width:18px; height:18px; border-radius:50%; border:1.5px solid #ccc; flex-shrink:0;"></div>
+                        </label>
+
+                    </div>
+
+                    <button class="btn btn-place-order shadow-sm w-100 mb-2" id="proceedToDetailsBtn">Next →</button>
+                    <button class="btn btn-cancel w-100" id="backToOrderBtn">← Back to Order</button>
+                </div>
+
+                <!-- Step 2: Enter Payment Details -->
+                <div class="px-3 pb-3" id="step-enter-details" style="display:none;">
+
+                    <!-- Maya Details -->
+                    <div id="details-Maya" class="payment-details-form" style="display:none;">
+                        <p class="text-muted small fw-bold mb-3">MAYA DETAILS</p>
+                        <div class="mb-3">
+                            <label class="form-label text-brown fw-bold small">Account Name</label>
+                            <input type="text" class="form-control rounded-3" id="maya-account-name" placeholder="e.g. Juan Dela Cruz" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-brown fw-bold small">Maya Mobile Number</label>
+                            <input type="tel" class="form-control rounded-3" id="maya-mobile" placeholder="e.g. 09XXXXXXXXX" maxlength="11" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-brown fw-bold small">Reference Number</label>
+                            <input type="text" class="form-control rounded-3" id="maya-ref" placeholder="e.g. 123456789012" maxlength="20" />
+                        </div>
+                    </div>
+
+                    <!-- GCash Details -->
+                    <div id="details-GCash" class="payment-details-form" style="display:none;">
+                        <p class="text-muted small fw-bold mb-3">GCASH DETAILS</p>
+                        <div class="mb-3">
+                            <label class="form-label text-brown fw-bold small">Account Name</label>
+                            <input type="text" class="form-control rounded-3" id="gcash-account-name" placeholder="e.g. Juan Dela Cruz" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-brown fw-bold small">GCash Mobile Number</label>
+                            <input type="tel" class="form-control rounded-3" id="gcash-mobile" placeholder="e.g. 09XXXXXXXXX" maxlength="11" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-brown fw-bold small">Reference Number</label>
+                            <input type="text" class="form-control rounded-3" id="gcash-ref" placeholder="e.g. 123456789012" maxlength="20" />
+                        </div>
+                    </div>
+
+                    <!-- Cash Details -->
+                    <div id="details-Cash" class="payment-details-form" style="display:none;">
+                        <p class="text-muted small fw-bold mb-3">CASH PAYMENT</p>
+                        <div class="mb-3">
+                            <label class="form-label text-brown fw-bold small">Your Name</label>
+                            <input type="text" class="form-control rounded-3" id="cash-name" placeholder="e.g. Juan Dela Cruz" />
+                        </div>
+                        <div class="alert rounded-3 mb-4" style="background:#EAF3DE; border:1px solid #C0DD97;">
+                            <div class="fw-bold text-brown small mb-1">📋 Instructions</div>
+                            <div class="text-muted small">Please proceed to the cashier to complete your payment. Have the exact amount ready.</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-place-order shadow-sm w-100 mb-2" id="confirmPaymentBtn">Confirm Payment</button>
+                    <button class="btn btn-cancel w-100" id="backToMethodBtn">← Back to Payment Methods</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        
+    document.addEventListener("DOMContentLoaded", function () {
+
         // --- 1. PRODUCT MODAL LOGIC (Plus/Minus & Size Math) ---
         document.querySelectorAll('.btn-qty').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const targetId = this.getAttribute('data-target');
                 const inputEl = document.getElementById('qty-input-' + targetId);
                 const textEl = document.getElementById('qty-text-' + targetId);
@@ -177,7 +291,7 @@
         });
 
         document.querySelectorAll('.size-radio').forEach(radio => {
-            radio.addEventListener('change', function() {
+            radio.addEventListener('change', function () {
                 const targetId = this.id.split('-')[1];
                 updateTotal(targetId);
             });
@@ -186,7 +300,7 @@
         function updateTotal(itemId) {
             const qty = parseInt(document.getElementById('qty-input-' + itemId).value);
             const basePrice = parseFloat(document.getElementById('total-' + itemId).getAttribute('data-baseprice'));
-            
+
             let addon = 0;
             const selectedRadio = document.querySelector(`input[name="Size"][id$="-${itemId}"]:checked`);
             if (selectedRadio) {
@@ -201,21 +315,19 @@
         // --- 2. DYNAMIC CART LOGIC ---
         let cart = [];
 
-        // Listen for "Add to Order" clicks
         document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const form = this.closest('form');
                 const productId = form.querySelector('input[name="ProductId"]').value;
                 const name = this.closest('.p-4').querySelector('.product-name-display').innerText;
                 const qty = parseInt(form.querySelector('input[name="Quantity"]').value);
-                
+
                 const selectedRadio = form.querySelector('input[name="Size"]:checked');
                 const size = selectedRadio.value;
                 const sizeAddon = parseFloat(selectedRadio.getAttribute('data-addon'));
                 const basePrice = parseFloat(form.querySelector('.live-total').getAttribute('data-baseprice'));
                 const unitPrice = basePrice + sizeAddon;
 
-                // Check if already in cart (same product AND same size)
                 const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
                 if (existingIndex > -1) {
                     cart[existingIndex].qty += qty;
@@ -223,17 +335,14 @@
                     cart.push({ id: productId, name: name, size: size, price: unitPrice, qty: qty });
                 }
 
-                // Close the product modal
                 const modalEl = this.closest('.modal');
                 const bsModal = bootstrap.Modal.getInstance(modalEl);
                 bsModal.hide();
 
-                // Update the Cart Modal HTML
                 renderCart();
             });
         });
 
-        // Function to draw the cart HTML
         function renderCart() {
             const container = document.getElementById('cartItemsContainer');
             const subtotalEl = document.getElementById('cart-subtotal');
@@ -282,8 +391,7 @@
             totalEl.innerText = 'P' + grandTotal;
         }
 
-        // Listen for clicks inside the Cart Modal (+, -, Remove)
-        document.getElementById('cartItemsContainer').addEventListener('click', function(e) {
+        document.getElementById('cartItemsContainer').addEventListener('click', function (e) {
             if (e.target.classList.contains('cart-minus')) {
                 const index = e.target.getAttribute('data-index');
                 if (cart[index].qty > 1) {
@@ -303,89 +411,210 @@
             }
         });
 
-        // --- 3. SUBMIT ORDER LOGIC ---
+
+        // --- 3. PLACE ORDER → OPEN PAYMENT MODAL ---
         const placeOrderBtn = document.querySelector('.btn-place-order');
         if (placeOrderBtn) {
-            placeOrderBtn.addEventListener('click', function() {
+            placeOrderBtn.addEventListener('click', function () {
                 if (cart.length === 0) {
                     alert("Your cart is empty!");
                     return;
                 }
 
-                // Change button text to show loading
-                this.innerText = "Processing...";
-                this.disabled = true;
+                // Reset to Step 1
+                showStep('select-method');
+                resetPaymentMethodSelection();
 
-                // Send cart data to the C# Controller using Razor to safely generate the URL
-                fetch('@Url.Action("PlaceOrder", "Order")', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(cart)
-                })
-                    .then(response => {
-                        if (!response.ok) throw new Error("Network response was not ok");
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            // Redirect to the Order History page
-                            window.location.href = data.redirectUrl;
-                        } else {
-                            alert("Failed to place order.");
-                            this.innerText = "Place Order";
-                            this.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("An error occurred while communicating with the server.");
-                        this.innerText = "Place Order";
-                        this.disabled = false;
-                    });
+                // Hide order modal, show payment modal
+                bootstrap.Modal.getInstance(document.getElementById('orderModal')).hide();
+                setTimeout(() => {
+                    new bootstrap.Modal(document.getElementById('paymentModal')).show();
+                }, 350);
             });
         }
-                    // --- 4 & 5. COMBINED FILTER & SEARCH LOGIC ---
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const searchInput = document.getElementById('menuSearch');
-    const productItems = document.querySelectorAll('.product-item');
 
-    function applyFilters() {
-        const activeBtn = document.querySelector('.filter-btn.active');
-        const selectedCategory = activeBtn.innerText.toLowerCase().trim();
-        const searchTerm = searchInput.value.toLowerCase().trim();
 
-        productItems.forEach(item => {
-            const itemCategory = item.getAttribute('data-category');
-            const productName = item.querySelector('.card-title').innerText.toLowerCase();
-            const productDesc = item.querySelector('.card-text').innerText.toLowerCase();
+        // --- 4. PAYMENT METHOD VISUAL SELECTION ---
+        document.querySelectorAll('.payment-method-option').forEach(opt => {
+            opt.addEventListener('click', function () {
+                resetPaymentMethodSelection();
+                this.style.borderColor = '#5C3A1E';
+                const dot = this.querySelector('.pay-radio-dot');
+                dot.style.borderColor = '#5C3A1E';
+                dot.style.background = '#5C3A1E';
+                dot.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:#fff;margin:auto;margin-top:4px;"></div>';
+                this.querySelector('.pay-radio').checked = true;
+            });
+        });
 
-            // Check if it matches Category
-            const matchesCategory = (selectedCategory === "all items" || itemCategory === selectedCategory);
+        function resetPaymentMethodSelection() {
+            document.querySelectorAll('.payment-method-option').forEach(o => {
+                o.style.borderColor = '';
+                const d = o.querySelector('.pay-radio-dot');
+                d.style.borderColor = '#ccc';
+                d.style.background = '';
+                d.innerHTML = '';
+            });
+            document.querySelectorAll('.pay-radio').forEach(r => r.checked = false);
+        }
 
-            // Check if it matches Search
-            const matchesSearch = (productName.includes(searchTerm) || productDesc.includes(searchTerm));
+        function showStep(stepName) {
+            document.getElementById('step-select-method').style.display = 'none';
+            document.getElementById('step-enter-details').style.display = 'none';
+            document.getElementById('step-' + stepName).style.display = 'block';
+        }
 
-            // Only show if BOTH are true
-            if (matchesCategory && matchesSearch) {
-                item.style.display = "";
-            } else {
-                item.style.display = "none";
+
+        // --- 5. NEXT → SHOW DETAILS FORM ---
+        document.getElementById('proceedToDetailsBtn').addEventListener('click', function () {
+            const selectedMethod = document.querySelector('.pay-radio:checked');
+            if (!selectedMethod) {
+                alert("Please select a payment method.");
+                return;
             }
-        });
-    }
 
-    // Event for buttons
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            filterButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            applyFilters();
-        });
-    });
+            // Hide all detail forms, show the matching one
+            document.querySelectorAll('.payment-details-form').forEach(f => f.style.display = 'none');
+            document.getElementById('details-' + selectedMethod.value).style.display = 'block';
 
-    // Event for search input
-    searchInput.addEventListener('keyup', applyFilters);
+            // Clear all input fields
+            document.querySelectorAll('.payment-details-form input[type="text"], .payment-details-form input[type="tel"]').forEach(input => {
+                input.value = '';
+            });
+
+            showStep('enter-details');
+        });
+
+
+        // --- 6. BACK TO METHOD SELECTION ---
+        document.getElementById('backToMethodBtn').addEventListener('click', function () {
+            showStep('select-method');
+        });
+
+
+        // --- 7. BACK TO ORDER MODAL ---
+        document.getElementById('backToOrderBtn').addEventListener('click', function () {
+            bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
+            setTimeout(() => {
+                new bootstrap.Modal(document.getElementById('orderModal')).show();
+            }, 350);
+        });
+
+
+        // --- 8. CONFIRM PAYMENT → VALIDATE & SUBMIT ---
+        document.getElementById('confirmPaymentBtn').addEventListener('click', function () {
+            const selectedMethod = document.querySelector('.pay-radio:checked');
+            if (!selectedMethod) return;
+
+            const method = selectedMethod.value;
+            let paymentDetails = {};
+
+            // Validate fields based on method
+            if (method === 'Maya') {
+                const name = document.getElementById('maya-account-name').value.trim();
+                const mobile = document.getElementById('maya-mobile').value.trim();
+                const ref = document.getElementById('maya-ref').value.trim();
+
+                if (!name || !mobile || !ref) {
+                    alert("Please fill in all Maya payment details.");
+                    return;
+                }
+                if (!/^09\d{9}$/.test(mobile)) {
+                    alert("Please enter a valid Maya mobile number (e.g. 09XXXXXXXXX).");
+                    return;
+                }
+                paymentDetails = { accountName: name, mobileNumber: mobile, referenceNumber: ref };
+
+            } else if (method === 'GCash') {
+                const name = document.getElementById('gcash-account-name').value.trim();
+                const mobile = document.getElementById('gcash-mobile').value.trim();
+                const ref = document.getElementById('gcash-ref').value.trim();
+
+                if (!name || !mobile || !ref) {
+                    alert("Please fill in all GCash payment details.");
+                    return;
+                }
+                if (!/^09\d{9}$/.test(mobile)) {
+                    alert("Please enter a valid GCash mobile number (e.g. 09XXXXXXXXX).");
+                    return;
+                }
+                paymentDetails = { accountName: name, mobileNumber: mobile, referenceNumber: ref };
+
+            } else if (method === 'Cash') {
+                const name = document.getElementById('cash-name').value.trim();
+                if (!name) {
+                    alert("Please enter your name.");
+                    return;
+                }
+                paymentDetails = { customerName: name };
+            }
+
+            this.innerText = "Processing...";
+            this.disabled = true;
+
+            const payload = cart.map(item => ({ ...item, paymentMethod: method, paymentDetails: paymentDetails }));
+
+            fetch('@Url.Action("PlaceOrder", "Order")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert("Failed to place order.");
+                        this.innerText = "Confirm Payment";
+                        this.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("An error occurred while communicating with the server.");
+                    this.innerText = "Confirm Payment";
+                    this.disabled = false;
+                });
+        });
+
+
+        // --- 9. FILTER & SEARCH LOGIC ---
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('menuSearch');
+        const productItems = document.querySelectorAll('.product-item');
+
+        function applyFilters() {
+            const activeBtn = document.querySelector('.filter-btn.active');
+            const selectedCategory = activeBtn.innerText.toLowerCase().trim();
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            productItems.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                const productName = item.querySelector('.card-title').innerText.toLowerCase();
+                const productDesc = item.querySelector('.card-text').innerText.toLowerCase();
+
+                const matchesCategory = (selectedCategory === "all items" || itemCategory === selectedCategory);
+                const matchesSearch = (productName.includes(searchTerm) || productDesc.includes(searchTerm));
+
+                if (matchesCategory && matchesSearch) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                applyFilters();
+            });
+        });
+
+        searchInput.addEventListener('keyup', applyFilters);
     });
 </script>
