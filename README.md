@@ -103,7 +103,7 @@ Update-Database
 
 ## 👥 Team
 
-![Subject](https://img.shields.io/badge/Subject-IT--ELNET1%20(27656)-d4b896?style=for-the-badge)
+![Subject](https://img.shields.io/badge/Subject-IT--INTPROG32%20(27730)-d4b896?style=for-the-badge)
 ![Section](https://img.shields.io/badge/Section-BSIT%203E-e8d5b7?style=for-the-badge)
 
 **Project Manager:**
