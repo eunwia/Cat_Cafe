@@ -112,7 +112,6 @@ Update-Database
 **Members:**
 > Jhon Rovic A. Ramos<br/>
 > Bridget Narte<br/>
-> Roshele Faye Labiaga<br/>
 > John Armand Alvarez
 
 <div align="center">
